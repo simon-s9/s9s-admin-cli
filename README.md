@@ -12,17 +12,25 @@ npm install -g s9s-admin
 
 ```
 Usage:
-  s9s-admin-cli [OPTIONS] <command> [ARGS]
+  s9s-admin [OPTIONS] <command> [ARGS]
+
+Info:
+  s9s-admin version: 0.0.1
+
+  By default, the program will try to pickup the tokens from *.cnf files in /etc
+  if the script is running under root, otherwise you will (most-likely) need to
+  provide a token to make requests to the CMON process.
 
 Options:
-  -P, --rpcPort          RPC port (Default is 9500)
-  -H, --rpcHost          RPC host (Default is 127.0.0.1)
+  -rp, --rpcPort         RPC port (Default is 9500)
+  -rh, --rpcHost         RPC host (Default is 127.0.0.1)
   -c, --cluster NUMBER   Cluster ID
   -h, --host STRING      Host ID/Name/Ip
       --raw BOOLEAN      Output raw JSON
       --rawDates BOOLEAN Output raw Dates
   -l, --limit NUMBER     Limit output
   -f, --file FILE        Filename
+  -t, --token            Request token (optional)
   -k, --no-color         Omit color from output
       --debug            Show debug information
   -v, --version          Display the current version
@@ -30,8 +38,12 @@ Options:
 Commands:
   clusters:list          Shows the list of clusters
   clusters:hosts         Shows a list of cluster hosts
+  config:list            Shows cluster config
+  config:vars            Show license info
+  config:version         Show version info
   jobs:list              Shows the list of jobs
   jobs:messages          Shows list of messages for a job
+  jobs:status            Shows job status
   logs:list              Shows the list of logs
   logs:view              Shows log contents
   settings:list          Shows the list of clusters
