@@ -3,6 +3,13 @@
     "version": "0.0.1",
     "description": "Admin CLI tool for ClusterControl",
     "main": "admin.js",
+    "author": "Severalnines AB",
+    "license": "MIT",
+    "homepage": "http://github.com/simon-s9/s9s-admin-cli",
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com:simon-s9/s9s-admin-cli.git"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -10,13 +17,18 @@
         "s9s-admin": "./admin.js"
     },
     "keywords": [
-    "s9s",
-    "severalnines",
-    "admin",
-    "cli"
-  ],
-    "author": "Severalnines AB",
-    "license": "MIT",
+        "s9s",
+        "severalnines",
+        "admin",
+        "cli",
+        "clustercontrol"
+    ],
+    "contributors": [
+        {
+            "name": "Simon Kamenetskiy",
+            "email": "simon@severalnines.com"
+        }
+    ],
     "dependencies": {
         "cli": "^0.11.2",
         "cli-color": "^1.1.0",

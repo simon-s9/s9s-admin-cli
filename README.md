@@ -22,8 +22,8 @@ Info:
   provide a token to make requests to the CMON process.
 
 Options:
-  -rp, --rpcPort         RPC port (Default is 9500)
-  -rh, --rpcHost         RPC host (Default is 127.0.0.1)
+  -P, --rpcPort          RPC port (Default is 9500)
+  -H, --rpcHost          RPC host (Default is 127.0.0.1)
   -c, --cluster NUMBER   Cluster ID
   -h, --host STRING      Host ID/Name/Ip
       --raw BOOLEAN      Output raw JSON

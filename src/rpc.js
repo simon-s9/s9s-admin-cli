@@ -3,7 +3,7 @@ const querystring = require('querystring');
 const Promise = require('promise');
 exports = module.exports = function () {
     const encoding = 'utf8';
-    const rpcHost = '52.17.44.14'; // @todo: replace with this.options.rpcHost
+    const rpcHost = '127.0.0.1';
     const rpcPort = this.options.rpcPort;
     const $this = this;
 
