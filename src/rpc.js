@@ -1,6 +1,7 @@
 const http = require('http');
 const querystring = require('querystring');
 const Promise = require('promise');
+
 exports = module.exports = function () {
     const encoding = 'utf8';
     const rpcHost = '127.0.0.1';

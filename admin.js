@@ -1,19 +1,34 @@
 #!/usr/bin/env node
 
+// System modules
 const cli = require('cli');
 const filesystem = require('s9s-filesystem');
-const pack = filesystem.readJson(__dirname + '/package.json');
-const isRoot = process.getuid() === 0;
-const commands = require(__dirname + '/src/commands');
 const prettyjson = require('prettyjson');
 const clc = require('cli-color');
 const os = require('os');
 
+// Custom modules
+const pack = filesystem.readJson(`${__dirname}/package.json`);
+const commands = require(`${__dirname}/src/commands`);
+const isRoot = process.getuid() === 0;
+
 // Set app name and version
-cli.setApp(pack.name, pack.version);
+cli.setApp(
+    pack.name,
+    pack.version
+);
+
+// Set app usage
+cli.setUsage(
+    require(`${__dirname}/src/usage`)(cli, clc)
+);
 
 // Enable CLI plugins
-cli.enable('help', 'version', 'status');
+cli.enable(
+    'help',
+    'version',
+    'status'
+);
 
 /**
  * Helper: returns cluster configuration by id
@@ -114,49 +129,35 @@ cli.end = function (code) {
     this.exit(code || 0)
 };
 
-cli.setUsage(
-    `${cli.app} [OPTIONS] <command> [ARGS]
-
-` + clc.bold('Info:') +
-    `
-  ${cli.app} version: ${cli.version}
-
-  By default, the program will try to pickup the tokens from *.cnf files in /etc
-  if the script is running under root, otherwise you will (most-likely) need to
-  provide a token to make requests to the CMON process.`
-);
-
-cli.parse({
-    rpcPort: ['P', 'RPC port', null, 9500],
-    rpcHost: ['H', 'RPC host', null, '127.0.0.1'],
-    cluster: ['c', 'Cluster ID', 'int', null],
-    host: ['h', 'Host ID/Name/Ip', 'string', null],
-    raw: [null, 'Output raw JSON', 'boolean', false],
-    rawDates: [null, 'Output raw Dates', 'boolean', false],
-    limit: ['l', 'Limit output', 'int', null],
-    file: ['f', 'Filename', 'file', null],
-    token: ['t', 'Request token (optional)']
-}, (function () {
-    var list = {};
-    for (var i in commands) {
-        if (commands.hasOwnProperty(i)) {
-            list[i] = commands[i].info;
+cli.parse(
+    require(`${__dirname}/src/options`),
+    (function () {
+        var list = {};
+        for (var i in commands) {
+            if (commands.hasOwnProperty(i)) {
+                list[i] = commands[i].info;
+            }
         }
-    }
-    return list;
-})());
+        return list;
+    })());
 
 // Run the app
 cli.main(function (args, options) {
-    // if (!isRoot || options.token) {
-    //     return cli.error('You must have root priveleges!');
-    // }
-    cli.config = require(__dirname + '/src/config');
-    cli.dates = require(__dirname + '/src/dates')
+    // Try to load configs from /etc/cmon.cnf and /etc/cmon.d/*.cnf
+    cli.config = require(`${__dirname}/src/config`);
+
+    // Dates parser
+    cli.dates = require(`${__dirname}/src/dates`)
         .call(this);
-    cli.rpc = require(__dirname + '/src/rpc')
+
+    // RPC module
+    cli.rpc = require(`${__dirname}/src/rpc`)
         .call(this);
+
+    // Execute command
     if (cli.command in commands) {
-        commands[cli.command].exec.call(this);
+        commands[cli.command]
+            .exec
+            .call(this);
     }
 });
