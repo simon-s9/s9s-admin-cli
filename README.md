@@ -15,15 +15,15 @@ Usage:
   s9s-admin [OPTIONS] <command> [ARGS]
 
 Info:
-  s9s-admin version: 0.0.1
+  s9s-admin version: 0.0.2
 
   By default, the program will try to pickup the tokens from *.cnf files in /etc
   if the script is running under root, otherwise you will (most-likely) need to
   provide a token to make requests to the CMON process.
 
 Options:
-  -P, --rpcPort          RPC port (Default is 9500)
-  -H, --rpcHost          RPC host (Default is 127.0.0.1)
+  -P, --rpcPort [NUMBER] RPC port (Default is 9500)
+  -H, --rpcHost [STRING] RPC host (Default is 127.0.0.1)
   -c, --cluster NUMBER   Cluster ID
   -h, --host STRING      Host ID/Name/Ip
       --raw BOOLEAN      Output raw JSON
@@ -38,14 +38,18 @@ Options:
 Commands:
   clusters:list          Shows the list of clusters
   clusters:hosts         Shows a list of cluster hosts
+  clusters:remove        Remove a cluster
   config:list            Shows cluster config
   config:vars            Show license info
   config:version         Show version info
   jobs:list              Shows the list of jobs
   jobs:messages          Shows list of messages for a job
   jobs:status            Shows job status
+  jobs:add               Add a job
+  jobs:watch             Watch job progress
   logs:list              Shows the list of logs
   logs:view              Shows log contents
+  rpc:exec               Execute an RPC command
   settings:list          Shows the list of clusters
   settings:license       Show license info
   settings:version       Show version info
