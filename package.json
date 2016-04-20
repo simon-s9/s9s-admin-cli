@@ -1,6 +1,6 @@
 {
   "name": "s9s-admin",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Admin CLI tool for ClusterControl",
   "main": "admin.js",
   "author": "Severalnines AB",
