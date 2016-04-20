@@ -1,10 +1,14 @@
 const http = require('http');
 const querystring = require('querystring');
 const Promise = require('promise');
+const encoding = 'utf8';
 
+/**
+ * Export
+ * @return {Function}
+ */
 exports = module.exports = function () {
-    const encoding = 'utf8';
-    const rpcHost = '127.0.0.1';
+    const rpcHost = this.options.rpcHost;
     const rpcPort = this.options.rpcPort;
     const $this = this;
 
@@ -37,14 +41,23 @@ exports = module.exports = function () {
         return $this.getConfig(clusterId) !== null;
     }
 
+    /**
+     * Make a request to RPC server
+     * @param  {Number} clusterId
+     * @param  {String} scope
+     * @param  {String} [operation]
+     * @param  {Object} [data]
+     * @return {Promise}
+     */
     return function (clusterId, scope, operation, data) {
         data = data || {};
-        if ($this.options.token) {
-            data.token = this.options.token;
-        } else if (hasToken(clusterId)) {
-            data.token = getToken(clusterId);
+        if (!data.token) {
+            if ($this.options.token) {
+                data.token = this.options.token;
+            } else if (hasToken(clusterId)) {
+                data.token = getToken(clusterId);
+            }
         }
-
         if (operation) {
             data.operation = operation;
         }
@@ -52,7 +65,7 @@ exports = module.exports = function () {
             var request = http.request({
                 hostname: rpcHost,
                 port: rpcPort,
-                path: '/' + clusterId + '/' + scope,
+                path: `/${clusterId}/${scope}`,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

@@ -1,4 +1,9 @@
 const moment = require('moment');
+
+/**
+ * Export
+ * @type {Array}
+ */
 exports = module.exports = [
     {
         name: 'list',

@@ -129,6 +129,57 @@ cli.end = function (code) {
     this.exit(code || 0)
 };
 
+/**
+ * Returns the current ip address
+ * @return {String}
+ */
+cli.getIp = function () {
+    var ifaces = os.networkInterfaces();
+    var ip = [];
+    Object.keys(ifaces)
+        .forEach(function (ifname) {
+            var alias = 0;
+
+            ifaces[ifname].forEach(function (iface) {
+                if ('IPv4' !== iface.family || iface.internal !== false) {
+                    // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+                    return;
+                }
+
+                if (alias >= 1) {
+                    // this single interface has multiple ipv4 addresses
+                    // console.log(ifname + ':' + alias, iface.address);
+                    ip.push({
+                        iface: ifname,
+                        address: iface.address
+                    });
+                } else {
+                    // this interface has only one ipv4 adress
+                    // console.log(ifname, iface.address);
+                    ip.push({
+                        iface: ifname,
+                        address: iface.address
+                    });
+                }
+                ++alias;
+            });
+        });
+    return ip;
+};
+
+/**
+ * Execute a command
+ */
+cli.execCommand = function () {
+    var args = Array.prototype.slice.call(arguments);
+    var command = args.shift();
+    if (command in commands) {
+        commands[command]
+            .exec
+            .apply(this, args);
+    }
+};
+
 cli.parse(
     require(`${__dirname}/src/options`),
     (function () {
@@ -155,9 +206,5 @@ cli.main(function (args, options) {
         .call(this);
 
     // Execute command
-    if (cli.command in commands) {
-        commands[cli.command]
-            .exec
-            .call(this);
-    }
+    this.execCommand(cli.command);
 });

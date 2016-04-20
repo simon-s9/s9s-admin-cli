@@ -1,3 +1,7 @@
+/**
+ * Export
+ * @type {Array}
+ */
 exports = module.exports = [
     {
         name: 'list',
@@ -31,12 +35,21 @@ exports = module.exports = [
                 .then(function (data) {
                     $this.dates.object(data.data);
                     data.data.forEach(function (host) {
-                        $this.banner(`Cluster ${$this.options.cluster} | Host ${host.hostId} | ${host.hostname}`, 120, 'blue');
+                        $this.banner(
+                            `Cluster ${$this.options.cluster} | Host ${host.hostId} | ${host.hostname}`,
+                            120, 'blue');
                         $this.prettyJson(host);
                         $this.nn();
                     });
                 })
                 .catch($this.error);
+        }
+    },
+    {
+        name: 'remove',
+        info: 'Remove a cluster',
+        exec: function () {
+            const $this = this;
         }
     }
 ];

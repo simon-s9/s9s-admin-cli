@@ -1,7 +1,14 @@
-var config = {};
-exports = module.exports = config;
 const filesystem = require('s9s-filesystem');
 const os = require('os');
+
+var config = {};
+
+/**
+ * Export
+ * @type {Object}
+ */
+exports = module.exports = config;
+
 /**
  * Read configuration file
  * @param  {String} filename
@@ -21,13 +28,16 @@ function readConfig(filename) {
     });
     return result;
 }
-// Default cluster configurations (/etc/cmon.cnf)
+
+// Default cluster configurations (aka cluster 0) (/etc/cmon.cnf)
 config.default = readConfig('/etc/cmon.cnf');
+
+// Subdirectory /etc/cmon.d/*.cnf
 if (filesystem.isDirectory('/etc/cmon.d')) {
     var contents = filesystem.listDirectory('/etc/cmon.d');
     if (contents) {
         contents.forEach(function(filename) {
-            var conf = readConfig('/etc/cmon.d/' + filename);
+            var conf = readConfig(`/etc/cmon.d/${filename}`);
             config[conf.cluster_id] = conf;
         });
     }
