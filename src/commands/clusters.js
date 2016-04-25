@@ -1,3 +1,5 @@
+const jobs = require(__dirname + '/jobs.js');
+
 /**
  * Export
  * @type {Array}
@@ -49,7 +51,15 @@ exports = module.exports = [
         name: 'remove',
         info: 'Remove a cluster',
         exec: function () {
-            const $this = this;
+            if (!this.options.cluster) {
+                return this.error('Cluster ID not provided');
+            }
+
+            jobs.getByName('add')
+                .exec
+                .call(this, this.options.cluster, 'remove_cluster', {
+                    clusterid: this.options.cluster
+                });
         }
     }
 ];

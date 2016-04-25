@@ -1,7 +1,9 @@
 const os = require('os');
 const Spinner = require('cli-spinner')
     .Spinner;
-exports = module.exports = [
+const CommandsList = require(__dirname + '/../commandsList.js');
+
+exports = module.exports = new CommandsList([
     {
         name: 'list',
         info: 'Shows the list of jobs',
@@ -206,4 +208,4 @@ exports = module.exports = [
                 .catch(this.error);
         }
     }
-];
+]);
